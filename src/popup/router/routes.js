@@ -3,6 +3,10 @@ import Setting from '../components/Setting';
 
 const routes = [
     {
+        path: '*',
+        redirect: '/',
+    },
+    {
         path: '/',
         component: Main,
     },

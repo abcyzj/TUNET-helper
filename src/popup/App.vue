@@ -1,10 +1,6 @@
 <template>
     <v-app>
-        <v-navigation-drawer
-            app
-            v-model="drawer"
-            width="180px"
-        >
+        <v-navigation-drawer app v-model="drawer" width="180px">
             <v-list dense>
                 <v-list-item to="/">
                     <v-list-item-action>
@@ -25,11 +21,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-app-bar
-            app
-            color="indigo"
-            dark
-        >
+        <v-app-bar app color="indigo" dark>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer">
                 <v-icon>mdi-menu</v-icon>
             </v-app-bar-nav-icon>
@@ -37,14 +29,8 @@
         </v-app-bar>
 
         <v-content>
-            <v-container
-                fluid
-                class="fill-height"
-            >
-                <v-layout
-                    align-center
-                    justify-center
-                >
+            <v-container fluid class="fill-height">
+                <v-layout align-center justify-center>
                     <v-flex xs-12>
                         <router-view></router-view>
                     </v-flex>
