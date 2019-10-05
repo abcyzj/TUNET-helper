@@ -1,14 +1,14 @@
 <template>
-    <v-card height="300px" :loading="loading">
+    <v-card height="320px" :loading="loading">
         <v-card-title>联网详情</v-card-title>
         <v-list class="transparent">
             <v-list-item>
                 <v-list-item-title>状态</v-list-item-title>
                 <v-list-item-subtitle>{{
-                    isError ? '错误' : online ? '在线' : '离线'
+                    errMsg ? errMsg : online ? '在线' : '离线'
                 }}</v-list-item-subtitle>
             </v-list-item>
-            <template v-if="!isError && online">
+            <template v-if="!errMsg && online">
                 <v-list-item>
                     <v-list-item-title>用户名</v-list-item-title>
                     <v-list-item-subtitle>{{ username }}</v-list-item-subtitle>
@@ -23,45 +23,84 @@
                 </v-list-item>
             </template>
         </v-list>
+
+        <v-card-actions>
+            <v-btn @click="login" text color="blue darken-1" v-if="errMsg || !online">上线</v-btn>
+            <v-btn @click="logout" text color="blue darken-1" v-else>断线</v-btn>
+            <v-btn @click="refreshStatus" text color="green" icon><v-icon>mdi-refresh</v-icon></v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
 <script>
 import { sprintf } from 'sprintf-js';
+import throttle from 'lodash.throttle';
 
 export default {
     data() {
         return {
             loading: false,
             online: false,
-            isError: false,
+            errMsg: null,
             username: '',
             usedBytes: 0,
             onlineTime: 0,
-            timer: null,
+            timer: null
         };
     },
 
-    async mounted() {
-        this.loading = true;
-        try {
-            this.online = await this.$helper.isOnline();
-            const userInfo = await this.$helper.getUserInfo();
-            this.username = userInfo.username;
-            this.usedBytes = userInfo.usedBytes;
-            this.onlineTime = userInfo.onlineTime;
-            this.timer = setInterval(() => this.onlineTime++, 1000);
-        } catch (_) {
-            this.isError = true;
-        } finally {
-            this.loading = false;
-        }
+    mounted() {
+        this.refreshStatus();
     },
 
     destroyed() {
         if (this.timer !== null) {
             clearInterval(this.timer);
             this.timer = null;
+        }
+    },
+
+    methods: {
+        refreshStatus: throttle(async function() {
+            this.errMsg = null;
+            this.loading = true;
+            try {
+                this.online = await this.$helper.isOnline();
+                const userInfo = await this.$helper.getUserInfo();
+                this.username = userInfo.username;
+                this.usedBytes = userInfo.usedBytes;
+                this.onlineTime = userInfo.onlineTime;
+                if (this.timer !== null) {
+                    clearInterval(this.timer);
+                }
+                this.timer = setInterval(() => this.onlineTime++, 1000);
+            } catch (_) {
+                this.errMsg = '刷新失败';
+            } finally {
+                this.loading = false;
+            }
+        }, 200),
+        async logout() {
+            this.loading = true;
+            try {
+                await this.$helper.logout();
+            } catch (_) {
+                this.isError = true;
+            }
+            this.refreshStatus();
+        },
+        async login() {
+            this.loading = true;
+            try {
+                this.errMsg = await this.$helper.login('', '');
+            } catch (_) {
+                this.errMsg = '登录失败';
+            } finally {
+                this.loading = false;
+            }
+            if (this.errMsg === null) {
+                this.refreshStatus();
+            }
         }
     },
 
