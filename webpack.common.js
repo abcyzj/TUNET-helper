@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -70,5 +71,30 @@ module.exports = {
             excludeChunks: ['background'],
         }),
         new CleanWebpackPlugin(),
+        new GoogleFontsPlugin({
+            fonts: [
+                {
+                    family: 'Roboto',
+                    variants: ['100', '300', '400', '500', '700', '900'],
+                },
+            ],
+            path: 'fonts/',
+        }),
     ],
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
+    },
 };

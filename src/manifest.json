@@ -15,5 +15,10 @@
     "scripts": [
       "background.js"
     ]
-  }
+  },
+  "permissions": [
+    "storage",
+    "https://usereg.tsinghua.edu.cn/*",
+    "https://net.tsinghua.edu.cn/*"
+  ]
 }
