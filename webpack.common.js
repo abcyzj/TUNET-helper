@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 
@@ -70,7 +69,6 @@ module.exports = {
             filename: 'popup.html',
             excludeChunks: ['background'],
         }),
-        new CleanWebpackPlugin(),
         new GoogleFontsPlugin({
             fonts: [
                 {

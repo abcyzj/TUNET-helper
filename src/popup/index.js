@@ -2,6 +2,7 @@ import Vue from 'vue';
 import browser from 'webextension-polyfill';
 import vuetify from './plugins/vuetify';
 import Helper from '../lib/helper';
+import router from './router';
 import App from './App';
 
 window.browser = browser;
@@ -13,4 +14,5 @@ new Vue({
     el: '#app',
     render: h => h(App),
     vuetify,
+    router,
 });
