@@ -1,6 +1,6 @@
 <template>
     <v-card height="320px">
-        <v-card-title>设置</v-card-title>
+        <v-card-title>账户设置</v-card-title>
 
         <v-row align="center" justify="center">
             <v-form ref="form">
@@ -12,7 +12,6 @@
                 ></v-text-field>
                 <v-text-field
                     v-model="password"
-                    :counter="20"
                     label="密码"
                     type="password"
                     :rules="validateRule"

@@ -27,10 +27,18 @@
         <v-card-actions>
             <v-btn @click="login" text color="blue darken-1" v-if="errMsg || !online">上线</v-btn>
             <v-btn @click="logout" text color="blue darken-1" v-else>断线</v-btn>
-            <v-btn @click="refreshStatus" text color="green" icon
-                ><v-icon>mdi-refresh</v-icon></v-btn
-            >
+            <v-btn @click="refreshStatus" text color="green" icon><v-icon>mdi-refresh</v-icon></v-btn>
         </v-card-actions>
+
+        <v-dialog v-model="showDialog">
+            <v-card>
+                <v-card-title>{{ dialogMsg }}</v-card-title>
+                <v-card-actions>
+                    <div class="flex-grow-1"></div>
+                    <v-btn text color="green" @click="showDialog = false">确认</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -48,6 +56,8 @@ export default {
             usedBytes: 0,
             onlineTime: 0,
             timer: null,
+            showDialog: false,
+            dialogMsg: '',
         };
     },
 
@@ -92,9 +102,16 @@ export default {
             this.refreshStatus();
         },
         async login() {
+            console.log('hahah');
+            const [username, password] = await this.$storage.getCredentials();
+            if (!username || !password) {
+                this.dialogMsg = '未保存用户名和密码';
+                this.showDialog = true;
+                return;
+            }
             this.loading = true;
             try {
-                this.errMsg = await this.$helper.login('', '');
+                this.errMsg = await this.$helper.login(username, password);
             } catch (_) {
                 this.errMsg = '登录失败';
             } finally {

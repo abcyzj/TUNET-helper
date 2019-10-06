@@ -1,4 +1,5 @@
 import Main from '../components/Main';
+import Device from '../components/Device';
 import Setting from '../components/Setting';
 
 const routes = [
@@ -9,6 +10,10 @@ const routes = [
     {
         path: '/',
         component: Main,
+    },
+    {
+        path: '/device',
+        component: Device,
     },
     {
         path: '/setting',

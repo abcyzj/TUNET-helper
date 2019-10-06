@@ -10,6 +10,14 @@
                     </v-list-item-action>
                     <v-list-item-title>联网情况</v-list-item-title>
                 </v-list-item>
+                <v-list-item to="/device">
+                    <v-list-item-action>
+                        <v-list-item-icon>
+                            <v-icon>mdi-devices</v-icon>
+                        </v-list-item-icon>
+                    </v-list-item-action>
+                    <v-list-item-title>联网设备</v-list-item-title>
+                </v-list-item>
                 <v-list-item to="/setting">
                     <v-list-item-action>
                         <v-list-item-icon>
@@ -54,7 +62,7 @@ export default {
 body {
     padding: 0;
     margin: 0;
-    width: 300px;
+    width: 500px;
     height: 400px;
     scrollbar-width: none;
 }
