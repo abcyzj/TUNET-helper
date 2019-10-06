@@ -11,11 +11,6 @@
     "default_title": "TUNet助手",
     "default_popup": "popup.html"
   },
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
   "permissions": [
     "storage",
     "https://usereg.tsinghua.edu.cn/*",

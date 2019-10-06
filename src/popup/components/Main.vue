@@ -104,7 +104,6 @@ export default {
             this.refreshStatus();
         },
         async login() {
-            console.log('hahah');
             const [username, password] = await this.$storage.getCredentials();
             if (!username || !password) {
                 this.dialogMsg = '未保存用户名和密码';
