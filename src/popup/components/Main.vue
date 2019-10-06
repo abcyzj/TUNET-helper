@@ -27,7 +27,9 @@
         <v-card-actions>
             <v-btn @click="login" text color="blue darken-1" v-if="errMsg || !online">上线</v-btn>
             <v-btn @click="logout" text color="blue darken-1" v-else>断线</v-btn>
-            <v-btn @click="refreshStatus" text color="green" icon><v-icon>mdi-refresh</v-icon></v-btn>
+            <v-btn @click="refreshStatus" text color="green" icon
+                ><v-icon>mdi-refresh</v-icon></v-btn
+            >
         </v-card-actions>
 
         <v-dialog v-model="showDialog">

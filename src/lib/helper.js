@@ -83,4 +83,11 @@ export default class TUNETHelper {
         });
         return deviceInfo;
     }
+
+    async dropDevice(addr) {
+        const form = new FormData();
+        form.set('action', 'drop');
+        form.set('user_ip', addr);
+        await this.http.post(USEREG_ONLINE_DEVICE, form);
+    }
 }

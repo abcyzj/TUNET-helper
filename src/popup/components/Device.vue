@@ -9,19 +9,27 @@
                     <th class="text-left">IP地址</th>
                     <th class="text-left">上线时间</th>
                     <th class="text-left">设备类型</th>
+                    <th class="text-left">下线</th>
                 </thead>
                 <tbody>
                     <tr v-for="device of deviceList" :key="device.addr">
                         <td>{{ device.addr }}</td>
                         <td>{{ device.startTime }}</td>
                         <td>{{ device.deviceType }}</td>
+                        <td>
+                            <v-btn icon text color="red" @click="dropDevice(device.addr)"
+                                ><v-icon>mdi-cancel</v-icon></v-btn
+                            >
+                        </td>
                     </tr>
                 </tbody>
             </template>
         </v-simple-table>
 
         <v-card-actions>
-            <v-btn text icon color="green" @click="refreshDeviceList"><v-icon>mdi-refresh</v-icon></v-btn>
+            <v-btn text icon color="green" @click="refreshDeviceList"
+                ><v-icon>mdi-refresh</v-icon></v-btn
+            >
         </v-card-actions>
 
         <v-dialog v-model="showDialog">
@@ -37,6 +45,8 @@
 </template>
 
 <script>
+import throttle from 'lodash.throttle';
+
 export default {
     data() {
         return {
@@ -61,7 +71,7 @@ export default {
                 return false;
             }
             this.loading = true;
-            if (!await this.$helper.useregLogin(username, password)) {
+            if (!(await this.$helper.useregLogin(username, password))) {
                 this.showDialog = true;
                 this.dialogMsg = '登录失败';
                 this.loading = false;
@@ -72,7 +82,7 @@ export default {
             return true;
         },
 
-        async refreshDeviceList() {
+        refreshDeviceList: throttle(async function() {
             this.loading = true;
             try {
                 this.deviceList = await this.$helper.getOnlineDevices();
@@ -82,7 +92,17 @@ export default {
             } finally {
                 this.loading = false;
             }
-        }
+        }, 200),
+
+        dropDevice: throttle(async function(addr) {
+            try {
+                await this.$helper.dropDevice(addr);
+                await this.refreshDeviceList();
+            } catch (_) {
+                this.showDialog = true;
+                this.dialogMsg = '下线请求出错';
+            }
+        }, 200),
     },
-}
+};
 </script>
