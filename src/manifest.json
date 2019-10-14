@@ -1,7 +1,7 @@
 {
   "name": "TUNet Helper",
   "description": "A webextension for managing Tsinghua campus net devices",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",
