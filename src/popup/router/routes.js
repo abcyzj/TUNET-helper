@@ -1,7 +1,3 @@
-import Main from '../components/Main';
-import Device from '../components/Device';
-import Setting from '../components/Setting';
-
 const routes = [
     {
         path: '*',
@@ -9,15 +5,15 @@ const routes = [
     },
     {
         path: '/',
-        component: Main,
+        component: () => import('../components/Main'),
     },
     {
         path: '/device',
-        component: Device,
+        component: () => import('../components/Device'),
     },
     {
         path: '/setting',
-        component: Setting,
+        component: () => import('../components/Setting'),
     },
 ];
 

@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 
 module.exports = {
@@ -77,6 +78,7 @@ module.exports = {
             ],
             path: 'fonts/',
         }),
+        new VuetifyLoaderPlugin(),
     ],
     optimization: {
         splitChunks: {
